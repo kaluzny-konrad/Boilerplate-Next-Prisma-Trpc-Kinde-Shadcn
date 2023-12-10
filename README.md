@@ -16,7 +16,7 @@ This repo is example of app, which uses this stack:
 1. Install dependencies
    `npm install @trpc/server @trpc/client @trpc/react-query @trpc/next @tanstack/react-query zod`
 
-2. Create files (based on https://github.com/K-Sikora/trpc-mysql-drizzle-nextjs-starter/tree/master and https://www.youtube.com/watch?v=ucX2zXAZ1I0)
+1. Create files (based on https://github.com/K-Sikora/trpc-mysql-drizzle-nextjs-starter/tree/master and https://www.youtube.com/watch?v=ucX2zXAZ1I0)
 
 - `src/server/trpc.ts` - creates TRPC (one per app) and defines middlewares
 - `src/server/index.ts` - defined and exported router (query logics)
@@ -31,10 +31,18 @@ This repo is example of app, which uses this stack:
 
 1. Init prisma:
    `npx prisma init`
-2. Add to .gitignore:
+1. Add to .gitignore:
    `.env`
-3. Create Database by provider like Planetscale, Neon, etc.
-4. Configure .env and schema.prisma by provider instructions
-5. Make first entity
-6. run `npx prisma db push`
-7. run `npx prisma studio` to check if everything is ok
+1. Create Database by provider like Planetscale, Neon, etc.
+1. Configure .env and schema.prisma by provider instructions
+1. Make first entity
+1. run `npx prisma db push`
+1. run `npx prisma studio` to check if everything is ok
+
+### Kinde (auth provider):
+
+1. Create account kinde.com, then create project and go to Quick start
+1. Install `npm i @kinde-oss/kinde-auth-nextjs`
+1. Copy .env variables from kinde.com
+1. Define KINDE_POST_LOGIN_REDIRECT_URL in .env
+1. Create API endpoint `src/app/api/auth/[kindeAuth]/route.ts`
