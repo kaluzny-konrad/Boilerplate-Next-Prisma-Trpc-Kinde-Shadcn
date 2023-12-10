@@ -11,11 +11,12 @@ This repo is example of app, which uses this stack:
 
 ## Getting started
 
-TRPC:
+### TRPC:
 
 1. Install dependencies
    `npm install @trpc/server @trpc/client @trpc/react-query @trpc/next @tanstack/react-query zod`
-2. Create files (based on https://github.com/K-Sikora/trpc-mysql-drizzle-nextjs-starter/tree/master)
+
+2. Create files (based on https://github.com/K-Sikora/trpc-mysql-drizzle-nextjs-starter/tree/master and https://www.youtube.com/watch?v=ucX2zXAZ1I0)
 
 - `src/server/trpc.ts` - creates TRPC (one per app) and defines middlewares
 - `src/server/index.ts` - defined and exported router (query logics)
@@ -25,3 +26,15 @@ TRPC:
 - `src/app/layout.tsx` - layout for app (with Providers)
 - `src/app/compoents/Component.tsx` - component with trpc query (with 'use client')
 - `src/app/page.tsx` - page with inserted Component (can be server side rendered)
+
+### Prisma:
+
+1. Init prisma:
+   `npx prisma init`
+2. Add to .gitignore:
+   `.env`
+3. Create Database by provider like Planetscale, Neon, etc.
+4. Configure .env and schema.prisma by provider instructions
+5. Make first entity
+6. run `npx prisma db push`
+7. run `npx prisma studio` to check if everything is ok
