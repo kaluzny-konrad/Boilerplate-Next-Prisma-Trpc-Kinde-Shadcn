@@ -52,3 +52,8 @@ This repo is example of app, which uses this stack:
 ### Shadcn
 
 1. `npx shadcn-ui@latest init`
+2. install components
+
+### Kinde middleware in trpc
+
+1. Create middleware in `src/server/trpc.ts`
