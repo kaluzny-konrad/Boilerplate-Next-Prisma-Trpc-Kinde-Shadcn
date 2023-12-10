@@ -5,6 +5,7 @@ import { httpBatchLink } from "@trpc/client";
 import { PropsWithChildren, useState } from "react";
 
 import { trpc } from "@/app/_trpc/client";
+import { MessagesContextProvider } from "./MessagesContext";
 
 export default function Providers({ children }: PropsWithChildren) {
   const [queryClient] = useState(() => new QueryClient({}));
@@ -20,7 +21,9 @@ export default function Providers({ children }: PropsWithChildren) {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <MessagesContextProvider>{children}</MessagesContextProvider>
+      </QueryClientProvider>
     </trpc.Provider>
   );
 }

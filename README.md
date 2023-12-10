@@ -38,6 +38,7 @@ This repo is example of app, which uses this stack:
 1. Make first entity
 1. run `npx prisma db push`
 1. run `npx prisma studio` to check if everything is ok
+1. Create `src/db/index.ts` with PrismaClient
 
 ### Kinde (auth provider):
 
@@ -46,3 +47,7 @@ This repo is example of app, which uses this stack:
 1. Copy .env variables from kinde.com
 1. Define KINDE_POST_LOGIN_REDIRECT_URL in .env
 1. Create API endpoint `src/app/api/auth/[kindeAuth]/route.ts`
+
+### Shadcn
+
+1. `npx shadcn-ui@latest init`
