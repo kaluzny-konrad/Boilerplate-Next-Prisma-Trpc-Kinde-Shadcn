@@ -1,8 +1,9 @@
-'use client'
+"use client";
 
 import React from "react";
 import { MessagesContext } from "./MessagesContext";
 import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 
 type Props = {};
 
@@ -27,15 +28,18 @@ export default function AddMessage({}: Props) {
             textareaRef.current?.focus();
           }
         }}
+        className="mb-2"
       />
-      <button
+      <Button
         onClick={() => {
           addMessage(message);
           textareaRef.current?.focus();
         }}
+        disabled={isLoading}
+        aria-label="send message"
       >
         Add
-      </button>
+      </Button>
     </div>
   );
 }

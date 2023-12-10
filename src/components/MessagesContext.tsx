@@ -2,7 +2,7 @@ import { trpc } from "@/app/_trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import axios, { AxiosError } from "axios";
-import { Message } from "@prisma/client";
+import { useToast } from "./ui/use-toast";
 
 type MessageContextType = {
   addMessage: (message: string) => void;
@@ -28,6 +28,8 @@ export const MessagesContextProvider = ({ children }: Props) => {
   const utils = trpc.useUtils();
   const backupMessage = React.useRef("");
   const optimisticMessageId = "optimistic-message";
+
+  const { toast } = useToast();
 
   const { mutate: sendMessage } = useMutation({
     mutationFn: async ({ message }: { message: string }) => {
@@ -80,7 +82,11 @@ export const MessagesContextProvider = ({ children }: Props) => {
 
       if (error instanceof AxiosError) {
         if (error.response?.status === 400) {
-          alert("Try again later");
+          return toast({
+            title: "There was a problem sending your message",
+            description: "Please refresh this page and try again later",
+            variant: "destructive",
+          });
         }
       }
     },
