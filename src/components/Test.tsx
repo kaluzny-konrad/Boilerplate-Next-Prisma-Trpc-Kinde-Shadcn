@@ -1,6 +1,6 @@
 'use client'
 
-import { trpc } from "@/trpc/client";
+import { trpc } from "@/app/_trpc/client";
 import React from "react";
 
 type Props = {};
