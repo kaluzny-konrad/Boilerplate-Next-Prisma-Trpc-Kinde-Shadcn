@@ -20,6 +20,7 @@ export default function AllMessages({}: Props) {
               {messages?.map((message) => (
                 <div key={message.id} className="flex">
                   <p>{message.id}</p>
+                  <p className="mx-2">-</p>
                   <p>{message.text}</p>
                 </div>
               ))}

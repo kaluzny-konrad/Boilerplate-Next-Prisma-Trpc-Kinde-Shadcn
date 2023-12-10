@@ -1,13 +1,11 @@
 import { trpc } from "@/app/_trpc/client";
-import { Message } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
-import { randomUUID } from "crypto";
 import React from "react";
 
 type MessageContextType = {
   addMessage: (message: string) => void;
   message: string;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   isLoading: boolean;
 };
 
@@ -55,7 +53,7 @@ export const MessagesContextProvider = ({ children }: Props) => {
       const previousMessages = utils.getPublicAllMessages.getData() ?? [];
 
       const newMessage = {
-        id: randomUUID(),
+        id: crypto.randomUUID(),
         createdAt: new Date().toString(),
         updatedAt: new Date().toString(),
         text: message,
@@ -75,20 +73,13 @@ export const MessagesContextProvider = ({ children }: Props) => {
 
       const reader = stream.getReader();
       const decoder = new TextDecoder();
-      let done = false;
-      let accResponse = "";
+      const { value } = await reader.read();
+      const newMessage = JSON.parse(decoder.decode(value));
 
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-        accResponse += chunkValue;
-
-        utils.getPublicAllMessages.setData(undefined, (old) => {
-          const oldMessages = old ?? [];
-          return [...oldMessages, JSON.parse(accResponse)];
-        });
-      }
+      utils.getPublicAllMessages.setData(undefined, (old) => {
+        const oldMessages = old ?? [];
+        return [...oldMessages, newMessage];
+      });
     },
     onError: async (err, newMessage, context) => {
       setIsLoading(false);
@@ -108,7 +99,7 @@ export const MessagesContextProvider = ({ children }: Props) => {
     sendMessage({ message });
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
   };
 
