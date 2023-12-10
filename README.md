@@ -4,10 +4,11 @@ This repo is example of app, which uses this stack:
 
 - Next.js
 - tRPC
-- MySQL
 - Prisma
 - zod
 - Kinde
+- axios
+- shadcn-ui
 
 ## Getting started
 

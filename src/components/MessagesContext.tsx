@@ -1,6 +1,8 @@
 import { trpc } from "@/app/_trpc/client";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
+import axios, { AxiosError } from "axios";
+import { Message } from "@prisma/client";
 
 type MessageContextType = {
   addMessage: (message: string) => void;
@@ -25,35 +27,26 @@ export const MessagesContextProvider = ({ children }: Props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const utils = trpc.useUtils();
   const backupMessage = React.useRef("");
+  const optimisticMessageId = "optimistic-message";
 
   const { mutate: sendMessage } = useMutation({
     mutationFn: async ({ message }: { message: string }) => {
-      const response = await fetch(`/api/message`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message,
-        }),
+      const response = await axios.post("/api/message", {
+        message,
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      return response.body;
+      return response.data.message;
     },
     onMutate: async ({ message }) => {
-      setIsLoading(true);
       backupMessage.current = message;
+      setIsLoading(true);
       setMessage("");
 
       await utils.getPublicAllMessages.cancel();
       const previousMessages = utils.getPublicAllMessages.getData() ?? [];
 
-      const newMessage = {
-        id: crypto.randomUUID(),
+      const optimisticMessage = {
+        id: optimisticMessageId,
         createdAt: new Date().toString(),
         updatedAt: new Date().toString(),
         text: message,
@@ -62,32 +55,34 @@ export const MessagesContextProvider = ({ children }: Props) => {
 
       utils.getPublicAllMessages.setData(undefined, (old) => {
         const oldMessages = old ?? [];
-        return [...oldMessages, newMessage];
+        return [...oldMessages, optimisticMessage];
       });
 
       return { previousMessages };
     },
-    onSuccess: async (stream) => {
-      setIsLoading(false);
-      if (!stream) return;
-
-      const reader = stream.getReader();
-      const decoder = new TextDecoder();
-      const { value } = await reader.read();
-      const newMessage = JSON.parse(decoder.decode(value));
-
+    onSuccess: async (newMessage) => {
       utils.getPublicAllMessages.setData(undefined, (old) => {
-        const oldMessages = old ?? [];
+        let oldMessages = old ?? [];
+
+        oldMessages = oldMessages.filter(
+          (message) => message.id !== optimisticMessageId
+        );
+
         return [...oldMessages, newMessage];
       });
     },
-    onError: async (err, newMessage, context) => {
-      setIsLoading(false);
+    onError: async (error, newMessage, context) => {
       setMessage(backupMessage.current);
       utils.getPublicAllMessages.setData(
         undefined,
         context?.previousMessages ?? []
       );
+
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 400) {
+          alert("Try again later");
+        }
+      }
     },
     onSettled: async () => {
       setIsLoading(false);
