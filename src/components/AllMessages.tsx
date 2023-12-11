@@ -42,8 +42,12 @@ export default function AllMessages({}: Props) {
                     <TableRow key={message.id}>
                       <TableCell>{message.id}</TableCell>
                       <TableCell>{message.text}</TableCell>
-                      <TableCell>{format(new Date(message.createdAt), "HH:mm")}</TableCell>
-                      <TableCell>{message.userId}</TableCell>
+                      <TableCell>
+                        {format(new Date(message.createdAt), "HH:mm")}
+                      </TableCell>
+                      <TableCell>
+                        {message.userId ? "logged" : "anonim"}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
