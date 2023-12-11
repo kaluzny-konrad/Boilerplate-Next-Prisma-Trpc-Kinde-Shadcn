@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { publicProcedure, router } from "./trpc";
+import { privateProcedure, publicProcedure, router } from "./trpc";
 import { z } from "zod";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { TRPCError } from "@trpc/server";
@@ -31,6 +31,15 @@ export const appRouter = router({
   }),
   getPublicAllMessages: publicProcedure.query(async () => {
     let messages = await db.message.findMany();
+    return messages;
+  }),
+  getUserMessages: privateProcedure.query(async ({ ctx }) => {
+    const userId = ctx.userId;
+    if (!userId) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    let messages = await db.message.findMany({
+      where: { userId: userId },
+    });
     return messages;
   }),
 });

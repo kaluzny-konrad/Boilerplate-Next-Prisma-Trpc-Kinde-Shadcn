@@ -23,8 +23,8 @@ export default function page({}: Props) {
         router.push("/api/auth/login");
       }
     },
-    retry: 3,
-    retryDelay: 1000,
+    retry: 2,
+    retryDelay: 500,
   });
 
   return <div>Syncing account...</div>;

@@ -4,6 +4,7 @@ import GoToDashboardButton from "@/components/GoToDashboardButton";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Test from "@/components/Test";
 import UserData from "@/components/UserData";
+import UserMessages from "@/components/UserMessages";
 
 export default function Home() {
   return (
@@ -23,6 +24,9 @@ export default function Home() {
         </div>
         <div className="mt-8">
           <GoToDashboardButton />
+        </div>
+        <div className="mt-8">
+          <UserMessages />
         </div>
       </main>
     </MaxWidthWrapper>
