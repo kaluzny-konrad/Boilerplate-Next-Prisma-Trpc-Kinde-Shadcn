@@ -20,7 +20,7 @@ export default function page({}: Props) {
     },
     onError: (error) => {
       if (error.data?.code === "UNAUTHORIZED") {
-        router.push("/sign-in");
+        router.push("/api/auth/login");
       }
     },
     retry: 3,
