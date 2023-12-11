@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { MessagesContext } from "./MessagesContext";
-import { Textarea } from "./ui/textarea";
-import { Button } from "./ui/button";
+import { MessagesContext } from "@/components/StandardQueryMessage/MessagesContext";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 type Props = {};
 

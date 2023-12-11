@@ -1,17 +1,17 @@
+import React from "react";
 import { trpc } from "@/app/_trpc/client";
 import { useMutation } from "@tanstack/react-query";
-import React from "react";
 import axios, { AxiosError } from "axios";
-import { useToast } from "./ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
-type MessageContextType = {
+type MessagesContextType = {
   addMessage: (message: string) => void;
   message: string;
   handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   isLoading: boolean;
 };
 
-export const MessagesContext = React.createContext<MessageContextType>({
+export const MessagesContext = React.createContext<MessagesContextType>({
   addMessage: () => {},
   message: "",
   handleInputChange: () => {},

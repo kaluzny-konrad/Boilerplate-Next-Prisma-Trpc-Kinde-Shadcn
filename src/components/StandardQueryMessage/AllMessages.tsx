@@ -1,7 +1,8 @@
 "use client";
 
-import { trpc } from "@/app/_trpc/client";
 import React from "react";
+import { trpc } from "@/app/_trpc/client";
+import { format } from "date-fns";
 import {
   Table,
   TableBody,
@@ -10,21 +11,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
-import { format } from "date-fns";
+} from "@/components/ui/table";
 
 type Props = {};
 
-export default function UserMessages({}: Props) {
-  const { data: messages, isLoading, error } = trpc.getUserMessages.useQuery();
+export default function AllMessages({}: Props) {
+  const { data: messages, isLoading } = trpc.getPublicAllMessages.useQuery();
 
   return (
     <div>
       <h1>AllMessages:</h1>
       {isLoading ? (
         <div>Loading...</div>
-      ) : error ? (
-        <div>You need login, to see your messages.</div>
       ) : (
         <>
           {messages != undefined && messages?.length > 0 ? (

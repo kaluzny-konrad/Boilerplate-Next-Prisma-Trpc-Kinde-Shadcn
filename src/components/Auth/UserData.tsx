@@ -3,7 +3,7 @@ import {
   LogoutLink,
   getKindeServerSession,
 } from "@kinde-oss/kinde-auth-nextjs/server";
-import AuthLinks from "./AuthLinks";
+import AuthLinks from "@/components/Auth/AuthLinks";
 
 type Props = {};
 

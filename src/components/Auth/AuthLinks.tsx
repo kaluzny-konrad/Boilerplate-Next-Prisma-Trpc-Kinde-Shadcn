@@ -1,6 +1,6 @@
 import React from "react";
 import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/server";
-import { buttonVariants } from "./ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 type Props = {};
 

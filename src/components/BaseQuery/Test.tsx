@@ -1,7 +1,7 @@
 "use client";
 
-import { trpc } from "@/app/_trpc/client";
 import React from "react";
+import { trpc } from "@/app/_trpc/client";
 
 type Props = {};
 
@@ -13,13 +13,7 @@ export default function Test({}: Props) {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <>
-          {test ? (
-            <p>{test}</p>
-          ) : (
-            <p>There is no text.</p>
-          )}
-        </>
+        <>{test ? <p>{test}</p> : <p>There is no text.</p>}</>
       )}
     </div>
   );

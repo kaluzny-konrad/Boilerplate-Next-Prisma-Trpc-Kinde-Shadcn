@@ -3,6 +3,7 @@ import { privateProcedure, publicProcedure, router } from "./trpc";
 import { z } from "zod";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { TRPCError } from "@trpc/server";
+import { INFINITE_QUERY_LIMIT } from "@/config/infinite-query";
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -41,6 +42,39 @@ export const appRouter = router({
       where: { userId: userId },
     });
     return messages;
+  }),
+  getInfiniteQueryMessages: publicProcedure
+  .input(
+    z.object({
+      limit: z.number().min(1).max(100).nullish(),
+      cursor: z.string().nullish(),
+    })
+  )
+  .query(async ({ input }) => {
+    const { cursor } = input;
+    const limit = input.limit ?? INFINITE_QUERY_LIMIT;
+    const messages = await db.message.findMany({
+      orderBy: { createdAt: "desc" },
+      cursor: cursor ? { id: cursor } : undefined,
+      take: limit + 1,
+      select: {
+        id: true,
+        createdAt: true,
+        text: true,
+        userId: true,
+      },
+    });
+
+    let nextCursor: typeof cursor | undefined = undefined;
+    if (messages.length > limit) {
+      const nextItem = messages.pop();
+      nextCursor = nextItem?.id;
+    }
+
+    return {
+      messages: messages,
+      nextCursor,
+    };
   }),
 });
 

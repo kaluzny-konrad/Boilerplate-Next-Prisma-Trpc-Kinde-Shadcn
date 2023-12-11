@@ -1,11 +1,12 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
 import { PropsWithChildren, useState } from "react";
+import { httpBatchLink } from "@trpc/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { trpc } from "@/app/_trpc/client";
-import { MessagesContextProvider } from "./MessagesContext";
+import { MessagesContextProvider } from "@/components/StandardQueryMessage/MessagesContext";
+import { InfQueryMessagesContextProvider } from "@/components/InfiniteQueryMessage/InfQueryMessagesContext";
 
 export default function Providers({ children }: PropsWithChildren) {
   const [queryClient] = useState(() => new QueryClient({}));
@@ -22,7 +23,11 @@ export default function Providers({ children }: PropsWithChildren) {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <MessagesContextProvider>{children}</MessagesContextProvider>
+        <MessagesContextProvider>
+          <InfQueryMessagesContextProvider>
+            {children}
+          </InfQueryMessagesContextProvider>
+        </MessagesContextProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
