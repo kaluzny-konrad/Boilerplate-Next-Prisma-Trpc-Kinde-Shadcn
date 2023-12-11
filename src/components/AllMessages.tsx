@@ -2,6 +2,16 @@
 
 import { trpc } from "@/app/_trpc/client";
 import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
+import { format } from "date-fns";
 
 type Props = {};
 
@@ -17,13 +27,27 @@ export default function AllMessages({}: Props) {
         <>
           {messages != undefined && messages?.length > 0 ? (
             <>
-              {messages?.map((message) => (
-                <div key={message.id} className="flex">
-                  <p>{message.id}</p>
-                  <p className="mx-2">-</p>
-                  <p>{message.text}</p>
-                </div>
-              ))}
+              <Table>
+                <TableCaption>A list of recent messages.</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Id</TableHead>
+                    <TableHead>Text</TableHead>
+                    <TableHead>CreatedAt</TableHead>
+                    <TableHead>UserId</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {messages?.map((message) => (
+                    <TableRow key={message.id}>
+                      <TableCell>{message.id}</TableCell>
+                      <TableCell>{message.text}</TableCell>
+                      <TableCell>{format(new Date(message.createdAt), "HH:mm")}</TableCell>
+                      <TableCell>{message.userId}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </>
           ) : (
             <p>There is no messages.</p>

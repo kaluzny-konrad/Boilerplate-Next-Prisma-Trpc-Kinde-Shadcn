@@ -9,6 +9,8 @@ This repo is example of app, which uses this stack:
 - Kinde
 - axios
 - shadcn-ui
+- TanStack Query
+- TanStack Table
 
 ## Getting started
 
